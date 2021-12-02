@@ -1,5 +1,5 @@
 const router = require('express').Router()
 
-router.get('/login', )
+router.get('/', )
 
 module.exports = router
