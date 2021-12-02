@@ -2,8 +2,15 @@ const express = require('express')
 const app = express()
 const config = require('./config/config')
 const intializeRoutes = require('./routes/index')
+const { connectMongo } = require('./dbconfig/dbconfiguration')
 
 app.use(express.json())
+
+connectMongo.then(() => {
+    console.log('Mongo DB connected successfully')
+}).catch((err) => {
+    console.log(`Kuch TOH gad bad hai DB ME ${err}`)
+})
 
 app.use(config.baseUrl, intializeRoutes)
 
