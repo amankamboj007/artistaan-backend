@@ -3,13 +3,17 @@ const mongoose = require('mongoose')
 const userSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     email: {
-        type: String
+        type: String,
+        unique: true,
+        index: true
     },
     phone: {
         type: String,
+        unique: true,
         required: true
     },
     isActive: {
@@ -29,4 +33,4 @@ const userSchema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("users",userSchema,"users")
+module.exports = mongoose.model("users", userSchema, "users")
