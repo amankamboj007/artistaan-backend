@@ -11,13 +11,25 @@ const userSchema = mongoose.Schema({
         unique: true,
         index: true
     },
+    password: {
+        type: String,
+        required: true
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    otp: {
+        value: { type: Number },
+        otpExpiry: { type: Number }
+    },
     phone: {
         type: String,
         unique: true,
         required: true
     },
     isActive: {
-        type: String,
+        type: Boolean,
         default: true
     },
     userRole: {
