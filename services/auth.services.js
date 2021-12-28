@@ -1,6 +1,8 @@
 const userModel = require('../models/userModel')
 const { generateRandom, encryptPassword, verifyPassword } = require('../helper/helperFunctions')
+const { generateAccessToken } = require('../middlewares/jwt.token.handler')
 const { Message } = require('../helper/constants')
+const _ = require('lodash')
 
 const signUp = async (req) => {
     req.password = await encryptPassword(req.password)
@@ -12,7 +14,7 @@ const login = async (req) => {
     if (!userDetail) {
         throw Message.userNotExists
     }
-    let verifyPass = verifyPassword(req.password, userDetail.password)
+    let verifyPass = await verifyPassword(req.password, userDetail.password)
     if (!verifyPass) {
         throw Message.invalidPass
     }
@@ -21,9 +23,11 @@ const login = async (req) => {
             value: generateRandom(4),
             otpExpiry: Date.now() + 120000 // 2min
         }
-        req = await userModel.findOneAndUpdate({ _id: userDetail._id }, { $set: userDetail }, { new: true })
+        await userModel.findOneAndUpdate({ _id: userDetail._id }, { $set: userDetail })
     }
-    return req;
+    userDetail.token = generateAccessToken({ _id: userDetail._id, userRole: userDetail.userRole })
+    userDetail = _.omit(userDetail, ['password'])
+    return userDetail;
 }
 module.exports = {
     signUp,
