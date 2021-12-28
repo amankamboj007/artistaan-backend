@@ -33,7 +33,8 @@ const userSchema = mongoose.Schema({
         default: true
     },
     userRole: {
-        type: Number                            // 1-user 2- seller 3- Admin
+        type: Number,
+        require: true                          // 1-user 2- seller 3- Admin
     },
     createdAt: {
         type: Number,
